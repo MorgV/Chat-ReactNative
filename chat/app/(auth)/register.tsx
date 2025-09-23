@@ -17,6 +17,7 @@ import { verticalScale } from "@/utils/styling";
 import { useRef, useState } from "react";
 import { useRouter } from "expo-router";
 import Button from "@/components/Button";
+import { useAuth } from "@/contexts/authContexts";
 
 const Register = () => {
   const nameRef = useRef("");
@@ -25,12 +26,22 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const { signUp } = useAuth();
+
   const handleSubmit = async () => {
     if (!emailRef.current || !nameRef.current || !passwordRef.current) {
       Alert.alert("Sign up", "Please fill all the fields");
       return;
     }
-    // regest
+    // regestr
+    try {
+      setIsLoading(true);
+      await signUp(emailRef.current, passwordRef.current, nameRef.current, "");
+    } catch (error: any) {
+      Alert.alert("Register Error", error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
