@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
+import { initializeSoket } from "./socket/socket.js";
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,9 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);
+
+// Слушаем сокет
+initializeSoket(server);
 
 connectDB()
   .then(() => {
